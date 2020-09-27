@@ -4,8 +4,11 @@ import hash
 class HashTest(unittest.TestCase):
 
     def setUp(self):
-        self.keys1 = ["1key1", "1key2", "1key3", 1, -1]
-        self.keys2 = ["2key1", "2key2", "2key3", 6, -8]
+        self.my_tuple1 = (1, 3, 4, "hithere")
+        self.my_tuple2 = ("another", "pretty", "tuple")
+        # Keys contain hashable values.
+        self.keys1 = ["1key1", "1key2", "1key3", self.my_tuple1, 1, -1]
+        self.keys2 = ["2key1", "2key2", "2key3", self.my_tuple2, 6, -8]
         self.ht = hash.my_hash()
         self.load_ht(self.keys1)
         self.load_ht(self.keys2)
@@ -33,9 +36,8 @@ class HashTest(unittest.TestCase):
         for k in self.keys2:
             self.ht.add(k + k, "")
         self.assertEqual(cnt * 2, self.ht.get_ht_count())
-        
 
-    def test_hash_get_values(self):
+    def test_hash_get_value(self):
         self.assertEqual(self.get_value(self.keys1[2]), self.keys1[2] + self.keys1[2])
         for k in self.keys2:
             self.assertEqual(self.get_value(k), k + k)
@@ -54,8 +56,10 @@ class HashTest(unittest.TestCase):
         self.ht.increment_value("foo", -100)
         self.assertEqual(self.get_value("foo"), 80)
         self.ht.change_value("foo", "bar")
-        # Only int values can be incremented
+        # Incrementing a non-int value raises an error
         self.assertRaises(ValueError, self.ht.increment_value, "foo", 1)
+        self.ht.change_value("foo", self.my_tuple1)
+        self.assertRaises(ValueError, self.ht.increment_value, "foo", 123)
         # Non existant keys return none
         self.assertIsNone(self.ht.increment_value("fubar key"))
         self.assertIsNone(self.ht.change_value("fubar key", "foo"))
