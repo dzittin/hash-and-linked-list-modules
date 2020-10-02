@@ -8,24 +8,29 @@ class my_hash:
         self.ht_size  = int(ht_size * 1.0)
         if self.ht_size < 10:
             self.ht_size = 10
-        self.hash_table = [llist.linked_list() for i in range(0, self.ht_size)]
+        self.hash_table = [None for i in range(0, self.ht_size)]
         self.count = 0  # Keys in table
         
     def hash_gen(self, key):
         """Generate a hash table index"""
         return hash(key) % self.ht_size
-        
+                    
+    def find_key_value(self, key):
+        """Find the value associated with key"""
+        lst = self.hash_table[self.hash_gen(key)]
+        if lst != None:
+            return lst.find_value(key)
+        return None
+    
     def add(self, key, value):
         """Add unique key, return if key was in table"""
         h_index = self.hash_gen(key)
-        if self.hash_table[h_index].head == None: # No list at this index
-            self.hash_table[h_index] = llist.linked_list()
-            self.hash_table[h_index].add_node(key, value)
+        if self.hash_table[h_index] == None: # No list at this index
+            self.hash_table[h_index] = llist.linked_list(key, value)
             self.count += 1
         else:
-            a_list = self.hash_table[h_index]
             if self.find_key_value(key) == None:
-                a_list.add_node(key, value)
+                self.hash_table[h_index].add_node(key, value)
                 self.count += 1
             else:
                 return None
@@ -60,12 +65,7 @@ class my_hash:
             else:
                 s = "Key='{}', value '{}' cannot be incremented.".format(node.key, node.value)
                 raise ValueError(s)
-                
-                
-    def find_key_value(self, key):
-        """Find the value associated with key"""
-        return self.hash_table[self.hash_gen(key)].find_value(key)
-    
+
     def delete_key(self, key):
         """Delete a found key"""
         """If key is deleted, return 'not None'"""
@@ -82,16 +82,16 @@ class my_hash:
         """tend to peform well where at least 90% of the collisions"""
         """are in lists whose length is 3 or less"""
         pass 
-    
-# Uncomment from next line to bottom to visualize hash table linked list lengths.
+
+# #Uncomment from here to bottom to visualize hash table linked list lengths.
 
 #     def dump_table_contents(self, full_dump):
 #         """Dump the contents of a hash table"""
 #         """For debugging and analysis"""
 #         counter = Counter()
 #         for llnkedlst in self.hash_table:
-#             lst = llnkedlst.print_list()
-#             if lst != None:
+#             if llnkedlst != None:
+#                 lst = llnkedlst.print_list()
 #                 list_len = len(lst)
 #                 counter[len(lst)] += 1
 #                 if full_dump:

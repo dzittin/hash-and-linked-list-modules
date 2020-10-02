@@ -5,12 +5,12 @@ class _node_:
         self.value = value
         self.next = None
 
-
 class linked_list:
     """A object containing a pointer to the head of a linked list"""
-    def __init__(self):
-        self.head = None
+    def __init__(self, key, value):
         self.count = 0 # Number of nodes in list
+        self.head = None
+        self.add_node(key, value)
 
     def add_node(self, key, value):
         """Nodes with identical keys are allowed"""
@@ -68,3 +68,14 @@ class linked_list:
             node_list.append((node.key, node.value))
             node = node.next
         return node_list
+    
+# l1 = linked_list("hi", "there")
+# for i in range(1, 10):
+#     l1.add_node(i, i + 1)
+# lst = l1.print_list()
+# #lst.sort()
+# print(lst)
+# print(l1.get_count())
+# l1.delete_node("hi")
+# print(l1.get_count())
+# print(l1.print_list())
