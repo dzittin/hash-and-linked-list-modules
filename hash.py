@@ -23,7 +23,8 @@ class my_hash:
         return None
     
     def add(self, key, value):
-        """Add unique key, return if key was in table"""
+        """Add unique key. Prohibit duplicate keys"""
+        """A key must be hashable. A value can be any data type"""
         h_index = self.hash_gen(key)
         if self.hash_table[h_index] == None: # No list at this index
             self.hash_table[h_index] = llist.linked_list(key, value)
@@ -33,8 +34,8 @@ class my_hash:
                 self.hash_table[h_index].add_node(key, value)
                 self.count += 1
             else:
-                return None
-        return not None  # Key already in table..nothing done.
+                return None # Key already in table
+        return not None
     
     def get_ht_count(self):
         """Return count of keys in table"""

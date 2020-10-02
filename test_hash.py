@@ -64,7 +64,17 @@ class HashTest(unittest.TestCase):
         self.assertIsNone(self.ht.increment_value("fubar key"))
         self.assertIsNone(self.ht.change_value("fubar key", "foo"))
 
-    
+    def test_add_duplicate_key(self):
+        v = self.ht.add("foo", "bar")
+        self.assertIsNotNone(v)
+        v = self.ht.add("foo", 123)
+        self.assertIsNone(v)
+        self.ht.delete_key("foo")
+        v = self.ht.add("foo", 100)
+        self.assertIsNotNone(v)
+        v = self.ht.add("foo", 125)
+        self.assertIsNone(v)
+        
     def test_delete_value(self):
         ht_key_cnt = len(self.keys1) + len(self.keys2)
         self.assertEqual(self.get_count(), ht_key_cnt)
